@@ -132,16 +132,17 @@
             max-width: 1000px; /* 最大宽度限制 */
         }
 
-        #photo-wall {
+        .photo-wall {
             display: flex;
             justify-content: space-between; /* 确保间距平均分布 */
             width: 100%; /* 占满整个页面宽度 */
+            margin: 30px; /* 增加这个值会使边缘更宽 */
         }
 
         .photo-container {
-            width: calc(33.333% - 10px); /* 三个容器平分宽度，减去间距 */
+            width: calc(33.333% - 1px); /* 三个容器平分宽度，减去间距 */
             padding-top: 25%; /* 高度是宽度的一定比例，这里设置为4:3比例，也就是高度是宽度的3/4 */
-            margin: 5px; /* 两侧的间距 */
+            margin: 10px; /* 两侧的间距 */
             overflow: hidden; /* 超出部分隐藏，用于截取图片 */
             position: relative;
         }
@@ -154,6 +155,16 @@
             width: 100%;
             height: 100%;
             object-fit: cover; /* 裁剪并保持图片内容居中 */
+        }
+
+        .photo-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
 
 
@@ -205,7 +216,7 @@
 <body>
     <!-- 1. 标题部分 -->
     <div class="header-title">
-        <img src="/首页照片/council-Logo.png" alt="网站Logo">
+        <img src="/Users/ssh/Desktop/理事会@council图片社/理事会@council-平台搭建/首页照片/理事会@council-Logo.png" alt="网站Logo">
         <h1>理事会@council图片社</h1>
     </div>
 
@@ -260,6 +271,8 @@
 
     </div>
 
+   
+
     <script>
     function showDropdown() {
         document.querySelector('.nav-item.active .dropdown-menu').style.display = 'block';
@@ -275,28 +288,50 @@
     function updatePhotoWall() {
         var photoWall = document.getElementById('photo-wall');
         photoWall.innerHTML = ''; // 清空当前的照片
-        var totalPhotos = 10; // 这里根据实际图片数量进行调整
+        var totalPhotos = 36; // 这里根据实际图片数量进行调整
         var chosenPhotos = [];
-        while (chosenPhotos.length < 3) {
+        while (chosenPhotos.length < 6) {
             var photoIndex = Math.floor(Math.random() * totalPhotos) + 1;
             if (!chosenPhotos.includes(photoIndex)) {
                 chosenPhotos.push(photoIndex);
                 } 
             } 
         // 创建并添加照片元素
-        chosenPhotos.forEach(function(index) {
-            var container = document.createElement('div');
-            container.className = 'photo-container';
-            var img = document.createElement('img');
-            img.src = `首页背景照片墙/photo${index}.jpeg`; // 确保这里的路径与您的文件结构匹配
-            img.alt = `Photo ${index}`;
-            img.onclick = function() { openModal(img.src); }; // 添加点击事件
-            container.appendChild(img);
-            photoWall.appendChild(container);
+         // 创建第一行
+         var row1 = document.createElement('div');
+            row1.className = 'row';
+            
+            // 创建第二行
+            var row2 = document.createElement('div');
+            row2.className = 'row';
+            
+            // 添加照片到行
+            chosenPhotos.forEach(function(index, i) {
+                var container = document.createElement('div');
+                container.className = 'photo-container';
+                var img = document.createElement('img');
+                img.src = `PhotosWall/photo${index}.jpg`; // 确保这里的路径与您的文件结构匹配
+                img.alt = `Photo${index}`;
+                img.onclick = function() { openModal(img.src); }; // 添加点击事件
+                container.appendChild(img);
+                
+                // 前3张放到第一行，后3张放到第二行
+                if (i < 3) {
+                    row1.appendChild(container);
+                } else {
+                    row2.appendChild(container);
+                }
             });
+            
+            // 将行添加到照片墙
+            photoWall.appendChild(row1);
+            photoWall.appendChild(row2);
         }
-        setInterval(updatePhotoWall, 5000);
+        
+        setInterval(updatePhotoWall, 6000);
         window.onload = updatePhotoWall;
+
+
         // 打开模态窗口函数
         function openModal(src) {
             var modal = document.getElementById('myModal');
@@ -344,7 +379,7 @@
         <!-- 声明 -->
         <section id="statement" style="padding-top: 60px; margin-top: -60px;">
           <h2>声明</h2>
-          <p>理事会@council图片社成立于2025年7月16日，主要活动地址是此线上平台。目前以及未来很长一段时间内，本网站（包括其中全部摄影作品与文字内容）仅供社团内部成员分享阅读。社团不公开、不盈利、无版权归属，一切作品版权归原创作者所有。本社团的创办理念和一切相关责任由主创林松薤承担，日后发展与纳新活动的有关事宜由社员共同决策。</p>
+          <p>理事会@council图片社成立于2025年7月16日，主要活动地址是此线上平台。本网站仅供社团内部成员分享阅读。社团不公开、不盈利、无版权归属，一切作品版权归原创作者所有。</p>
         </section>
         
         <!-- 简介 -->
